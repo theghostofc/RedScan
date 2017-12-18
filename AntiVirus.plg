@@ -6,29 +6,18 @@
 --------------------Configuration: AntiVirus - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating command line "rc.exe /l 0x409 /fo"Debug/AntiVirus.res" /d "_DEBUG" /d "_AFXDLL" "C:\Windows\Desktop\AntiVirus_v3.25_dll\AntiVirus.rc"" 
-Creating temporary file "C:\WINDOWS\TEMP\RSP60D5.TMP" with contents
+Creating command line "rc.exe /l 0x409 /fo"Debug/AntiVirus.res" /d "_DEBUG" /d "_AFXDLL" "C:\Windows\Desktop\AntiVirus_v3.22_dll\AntiVirus.rc"" 
+Creating temporary file "C:\WINDOWS\TEMP\RSP6040.TMP" with contents
 [
 /nologo /MDd /W3 /GX /O1 /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /Fp"Debug/AntiVirus.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /c 
-"C:\Windows\Desktop\AntiVirus_v3.25_dll\AntiVirus.cpp"
-"C:\Windows\Desktop\AntiVirus_v3.25_dll\AntiVirusDlg.cpp"
+"C:\Windows\Desktop\AntiVirus_v3.22_dll\AntiVirusDlg.cpp"
 ]
-Creating command line "cl.exe @C:\WINDOWS\TEMP\RSP60D5.TMP" 
-Creating temporary file "C:\WINDOWS\TEMP\RSP60D6.TMP" with contents
-[
-/nologo /MDd /W3 /GX /O1 /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /Fp"Debug/AntiVirus.pch" /Yc"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /c 
-"C:\Windows\Desktop\AntiVirus_v3.25_dll\StdAfx.cpp"
-]
-Creating command line "cl.exe @C:\WINDOWS\TEMP\RSP60D6.TMP" 
+Creating command line "cl.exe @C:\WINDOWS\TEMP\RSP6040.TMP" 
 Creating command line "link.exe /nologo /subsystem:windows /incremental:yes /pdb:"Debug/RedScan.pdb" /debug /machine:I386 /out:"Debug\RedScan.exe" /pdbtype:sept  .\Debug\AntiVirus.obj .\Debug\AntiVirusDlg.obj .\Debug\StdAfx.obj .\Debug\AntiVirus.res "
 <h3>Output Window</h3>
 Compiling resources...
 Compiling...
-StdAfx.cpp
-Compiling...
-AntiVirus.cpp
 AntiVirusDlg.cpp
-Generating Code...
 Linking...
 
 

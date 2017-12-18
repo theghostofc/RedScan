@@ -33,7 +33,6 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CAntiVirusDlg)
 	enum { IDD = IDD_ANTIVIRUS_DIALOG };
-	CButton	m_btnOk;
 	CButton	m_btnCancel;
 	CStatic	m_deledata;
 	CStatic	m_sc;
@@ -43,6 +42,7 @@ public:
 	CButton	m_stReport;
 	CButton	m_btnBrowse;
 	CStatic	m_stPath;
+	CButton	m_btnScan;
 	CListBox	m_lstScan;
 	CStatic	m_stScan;
 	CStatic	m_scandata;
@@ -76,10 +76,10 @@ protected:
 	afx_msg HCURSOR OnQueryDragIcon();
 	afx_msg void OnBrowse();
 	afx_msg void OnChangeEditPath();
+	afx_msg void OnScan();
 	afx_msg void OnAbout();
 	afx_msg void OnDblclkListReport();
 	virtual void OnCancel();
-	virtual void OnOK();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

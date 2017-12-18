@@ -78,7 +78,6 @@ void CAntiVirusDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CAntiVirusDlg)
-	DDX_Control(pDX, IDOK, m_btnOk);
 	DDX_Control(pDX, IDCANCEL, m_btnCancel);
 	DDX_Control(pDX, IDC_STATIC_DELE_DATA, m_deledata);
 	DDX_Control(pDX, IDC_STATIC_SC, m_sc);
@@ -88,6 +87,7 @@ void CAntiVirusDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_STATIC_REPORT, m_stReport);
 	DDX_Control(pDX, IDC_BUTTON_BROWSE, m_btnBrowse);
 	DDX_Control(pDX, IDC_STATIC_PATH, m_stPath);
+	DDX_Control(pDX, IDC_BUTTON_SCAN, m_btnScan);
 	DDX_Control(pDX, IDC_LIST_REPORT, m_lstScan);
 	DDX_Control(pDX, IDC_STATIC_SCANNING_DATA, m_stScan);
 	DDX_Control(pDX, IDC_STATIC_SCAN_DATA, m_scandata);
@@ -105,6 +105,7 @@ BEGIN_MESSAGE_MAP(CAntiVirusDlg, CDialog)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON_BROWSE, OnBrowse)
 	ON_EN_CHANGE(IDC_EDIT_PATH, OnChangeEditPath)
+	ON_BN_CLICKED(IDC_BUTTON_SCAN, OnScan)
 	ON_BN_CLICKED(IDC_BUTTON_ABOUT, OnAbout)
 	ON_LBN_DBLCLK(IDC_LIST_REPORT, OnDblclkListReport)
 	//}}AFX_MSG_MAP
@@ -171,7 +172,7 @@ BOOL CAntiVirusDlg::OnInitDialog()
 void CAntiVirusDlg::InitDialog()
 {
 	m_btnBrowse.EnableWindow();
-	m_btnOk.EnableWindow(FALSE);
+	m_btnScan.EnableWindow(FALSE);
 	m_scandata.SetWindowText("0");
 	m_infedata.SetWindowText("0");
 	m_repadata.SetWindowText("0");
@@ -185,7 +186,7 @@ void CAntiVirusDlg::InitDialog()
 	glo.bScan=true;
 	glo.bClose=true;
 	strcpy(glo.buffer, "C:\\");
-	m_btnOk.SetWindowText("&Scan");
+	m_btnScan.SetWindowText("&Scan");
 	m_btnCancel.SetWindowText("&Close");
 	m_stPath.ShowWindow(SW_SHOW);
 	m_path.ShowWindow(SW_SHOW);
@@ -288,16 +289,16 @@ void CAntiVirusDlg::OnBrowse()
 	CoUninitialize();
 	m_path.SetWindowText(pszDisplayName);
 	if (strlen(pszDisplayName)>0)
-		m_btnOk.SetFocus();
+		m_btnScan.SetFocus();
 }
 
 void CAntiVirusDlg::OnChangeEditPath() 
 {
 	int Len = m_path.GetWindowTextLength();
 	if(Len > 0)
-		m_btnOk.EnableWindow();
+		m_btnScan.EnableWindow();
 	else
-		m_btnOk.EnableWindow(FALSE);
+		m_btnScan.EnableWindow(FALSE);
 }
 
 void DeleteKey(const HKEY hKey, char *cKey, char *cSubKey=NULL)
@@ -508,7 +509,7 @@ void CAntiVirusDlg::ScanReport()
 	MessageBox(szReport, "Result", MB_OK|MB_ICONINFORMATION);
 	if(glo.not_repaired > 0)
 	{
-		m_btnOk.SetWindowText("&Back");
+		m_btnScan.SetWindowText("&Back");
 		m_stPath.ShowWindow(SW_HIDE);
 		m_path.ShowWindow(SW_HIDE);
 		m_btnBrowse.ShowWindow(SW_HIDE);
@@ -521,10 +522,10 @@ void CAntiVirusDlg::ScanReport()
 		m_in.ShowWindow(SW_HIDE);
 		m_re.ShowWindow(SW_HIDE);
 		m_no.ShowWindow(SW_HIDE);
-		m_btnOk.EnableWindow();
+		m_btnScan.EnableWindow();
 		m_stScan.SetWindowText("One or More of these Files are still infected...");
 		m_lstScan.ShowWindow(SW_SHOW);
-		m_btnOk.SetFocus();
+		m_btnScan.SetFocus();
 		glo.bScan = false;
 	}
 }
@@ -536,6 +537,33 @@ UINT MainScan(LPVOID pParam)
 	cavd->ScanReport();
 	AfxEndThread(0);
 	return 0;
+}
+//Scan the Destn folder
+void CAntiVirusDlg::OnScan()
+{
+	if(glo.bScan)
+	{
+		CString szReport;
+		m_path.GetWindowText(glo.buffer, _MAX_PATH);
+		if(_chdir(glo.buffer))
+		{
+			MessageBox("Invalid Path", "Error", MB_OK|MB_ICONSTOP);
+			InitDialog();
+			return;
+		}
+		InitDialog();
+		m_btnCancel.SetWindowText("S&top");
+		m_btnBrowse.EnableWindow(FALSE);
+		m_btnCancel.SetFocus();
+		glo.bClose=false;
+		//Three Main Fn()s to Scan for the Virus
+		ScanReg();//1 - Registry
+		ScanDll();//2 - Kernel.Dll
+		//SearchDirectory();//3 - Scan the Destn Folder
+		m_pthread=AfxBeginThread(MainScan,(LPVOID)this);
+	}
+	else
+		InitDialog();
 }
 
 void CAntiVirusDlg::OnAbout() 
@@ -859,32 +887,4 @@ void CAntiVirusDlg::OnCancel()
 		return;
 	}
 	CDialog::OnCancel();
-}
-
-//Scan the Destn folder
-void CAntiVirusDlg::OnOK() 
-{
-	if(glo.bScan)
-	{
-		CString szReport;
-		m_path.GetWindowText(glo.buffer, _MAX_PATH);
-		if(_chdir(glo.buffer))
-		{
-			MessageBox("Invalid Path", "Error", MB_OK|MB_ICONSTOP);
-			InitDialog();
-			return;
-		}
-		InitDialog();
-		m_btnCancel.SetWindowText("S&top");
-		m_btnBrowse.EnableWindow(FALSE);
-		m_btnCancel.SetFocus();
-		glo.bClose=false;
-		//Three Main Fn()s to Scan for the Virus
-		ScanReg();//1 - Registry
-		ScanDll();//2 - Kernel.Dll
-		//SearchDirectory();//3 - Scan the Destn Folder
-		m_pthread=AfxBeginThread(MainScan,(LPVOID)this);
-	}
-	else
-		InitDialog();
 }

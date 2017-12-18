@@ -103,7 +103,7 @@ CAPTION "Red Scan - v3.25"
 FONT 8, "MS Sans Serif"
 BEGIN
     PUSHBUTTON      "&Browse...",IDC_BUTTON_BROWSE,239,32,50,14
-    DEFPUSHBUTTON   "&Scan",IDOK,57,179,50,14,WS_DISABLED
+    PUSHBUTTON      "OK",IDOK,7,179,50,14,NOT WS_VISIBLE | WS_DISABLED
     LTEXT           "Red Scan - v3.25 - by Vivek Jain - TheGhostOfC",
                     IDC_STATIC_SCANNING_DATA,7,8,305,17
     LTEXT           "&Folder to Scan",IDC_STATIC_PATH,30,35,47,8
@@ -119,6 +119,7 @@ BEGIN
     RTEXT           "0",IDC_STATIC_NOT_REPA_DATA,157,120,41,8
     LTEXT           "Deleted",IDC_STATIC_DELE,107,132,26,8
     RTEXT           "0",IDC_STATIC_DELE_DATA,157,132,41,8
+    DEFPUSHBUTTON   "&Scan",IDC_BUTTON_SCAN,57,179,50,14,WS_DISABLED
     PUSHBUTTON      "&Close",IDCANCEL,135,179,50,14
     PUSHBUTTON      "&About...",IDC_BUTTON_ABOUT,213,179,50,14
     LISTBOX         IDC_LIST_REPORT,7,28,306,145,LBS_SORT | 
@@ -157,7 +158,7 @@ BEGIN
             VALUE "LegalCopyright", "Copyright (C) 2003\0"
             VALUE "Made By", "Vivek Jain\0"
             VALUE "OriginalFilename", "RedScan.EXE\0"
-            VALUE "ProductName", "Red Scan - v3.25 - by Vivek Jain - TheGhostOfC\0"
+            VALUE "ProductName", "Red Scan - v3.22 - by Vivek Jain - TheGhostOfC\0"
             VALUE "ProductVersion", "3.22\0"
         END
     END
