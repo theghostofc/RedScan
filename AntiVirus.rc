@@ -82,7 +82,7 @@ BEGIN
     DEFPUSHBUTTON   "OK",IDOK,178,20,50,14,WS_GROUP
     LTEXT           "This Product will protect You from the Deadly HTML.RedLof.A Virus\nJust select the Folder to Scan and Click on the &Scan Button\n\n(For Best Results, First Scan all the Disk Drives of your Computer)\nSo, Safe Protection and Happy Scanning - bye \t theGhostofC",
                     IDC_STATIC_DESC,11,53,213,42,0,WS_EX_TRANSPARENT
-    LTEXT           "Made by Vivek Jain - theGhostofC\n\nReport Bugs to vivekjain@myrealbox.com\n\nCopyright (C) 2004",
+    LTEXT           "Made by Vivek Jain - theGhostofC\n\nReport Bugs to vivek@vivek-jain.com\n\nCopyright (C) 2004",
                     IDC_STATIC_ABOUT,35,7,137,41
 END
 
@@ -91,7 +91,7 @@ STYLE DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION |
     WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
 CAPTION "Red Scan - v3.27"
-FONT 8, "MS Sans Serif", 0, 0, 0x1
+FONT 8, "MS Sans Serif"
 BEGIN
     LTEXT           "&Folder to Scan",IDC_STATIC_PATH,30,35,47,8
     EDITTEXT        IDC_EDIT_PATH,84,33,156,12,ES_AUTOHSCROLL
@@ -142,14 +142,14 @@ BEGIN
         BLOCK "040904b0"
         BEGIN
             VALUE "Comments", "This Application will Remove the Deadly HTML.RedLof.A Virus\0"
-            VALUE "Contact", "vivekjain@myrealbox.com\0"
+            VALUE "Contact", "vivek@vivek-jain.com\0"
             VALUE "FileDescription", "AntiVirus Application\0"
-            VALUE "FileVersion", "3.22\0"
+            VALUE "FileVersion", "3.27\0"
             VALUE "LegalCopyright", "Copyright (C) 2003\0"
             VALUE "Made By", "Vivek Jain\0"
             VALUE "OriginalFilename", "RedScan.EXE\0"
-            VALUE "ProductName", "Red Scan - v3.25 - by Vivek Jain - TheGhostOfC\0"
-            VALUE "ProductVersion", "3.22\0"
+            VALUE "ProductName", "Red Scan - v3.27 - by Vivek Jain - TheGhostOfC\0"
+            VALUE "ProductVersion", "3.27\0"
         END
     END
     BLOCK "VarFileInfo"

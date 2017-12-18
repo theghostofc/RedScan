@@ -32,7 +32,7 @@ Type=0
 HeaderFile=AntiVirusDlg.h
 ImplementationFile=AntiVirusDlg.cpp
 Filter=D
-LastObject=IDC_LIST_REPORT
+LastObject=CAntiVirusDlg
 BaseClass=CDialog
 VirtualFilter=dWC
 
@@ -41,7 +41,7 @@ Type=0
 HeaderFile=AntiVirusDlg.h
 ImplementationFile=AntiVirusDlg.cpp
 Filter=D
-LastObject=CAboutDlg
+LastObject=IDC_STATIC_ABOUT
 BaseClass=CDialog
 VirtualFilter=dWC
 

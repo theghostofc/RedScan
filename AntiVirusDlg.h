@@ -33,24 +33,6 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CAntiVirusDlg)
 	enum { IDD = IDD_ANTIVIRUS_DIALOG };
-	CStatic	m_de;
-	CStatic	m_notrdata;
-	CButton	m_btnOk;
-	CButton	m_btnCancel;
-	CStatic	m_deledata;
-	CStatic	m_sc;
-	CStatic	m_re;
-	CStatic	m_no;
-	CStatic	m_in;
-	CButton	m_stReport;
-	CButton	m_btnBrowse;
-	CStatic	m_stPath;
-	CListBox	m_lstScan;
-	CStatic	m_stScan;
-	CStatic	m_scandata;
-	CStatic	m_repadata;
-	CStatic	m_infedata;
-	CEdit	m_path;
 	//}}AFX_DATA
 
 	// ClassWizard generated virtual function overrides
