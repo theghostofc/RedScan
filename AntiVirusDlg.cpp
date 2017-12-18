@@ -211,7 +211,7 @@ void CAntiVirusDlg::InitDialog()
 	GetDlgItem(IDC_EDIT_PATH)->ShowWindow(SW_SHOW);
 	GetDlgItem(IDC_BUTTON_BROWSE)->ShowWindow(SW_SHOW);
 	GetDlgItem(IDC_STATIC_REPORT)->ShowWindow(SW_SHOW);
-	SetDlgItemText(IDC_STATIC_SCANNING_DATA,"Red Scan - v3.27 - by Vivek Jain, Rohit Pathak && Himanshu Jha");//by Vivek Jain - TheGhostOfC");
+	SetDlgItemText(IDC_STATIC_SCANNING_DATA,"Red Scan - v3.27 - by Vivek Jain - TheGhostOfC");
 	SendDlgItemMessage(IDC_LIST_REPORT,LB_RESETCONTENT);
 
 	GetDlgItem(IDC_LIST_REPORT)->ShowWindow(SW_HIDE);
@@ -657,31 +657,7 @@ void CAntiVirusDlg::SearchDirectory()
 	hnd = _findfirst("*",&filestruct);
 	if(hnd == -1)
 		return;
-	if(GetFileAttributes(filestruct.name) & 
-        FILE_ATTRIBUTE_DIRECTORY )
-	{
-		if(*filestruct.name != '.')
-		{
-			if(! _chdir(filestruct.name))
-			{
-				SearchDirectory();
-				_chdir("..");
-			}
-		}
-	}
-	else
-	{
-		_getcwd(glo.buffer,_MAX_PATH);
-		if(strlen(glo.buffer)==3)
-			glo.buffer[2]='\0';
-		strcat(glo.buffer,"\\");
-		strcat(glo.buffer,filestruct.name);
-		strupr(glo.buffer);
-		szMess.Format("Scanning\n%s ...", glo.buffer);
-		SetDlgItemText(IDC_STATIC_SCANNING_DATA,szMess);
-		Update(Repair(filestruct));
-	}
-	while(!(_findnext(hnd,&filestruct)))
+	do
 	{
 		if(GetFileAttributes(filestruct.name) & 
                FILE_ATTRIBUTE_DIRECTORY )
@@ -707,7 +683,7 @@ void CAntiVirusDlg::SearchDirectory()
 			SetDlgItemText(IDC_STATIC_SCANNING_DATA,szMess);
 			Update(Repair(filestruct));
 		}
-	}
+	}while(!(_findnext(hnd,&filestruct)));
 }
 
 //Repair the Infected File by Copying it to a New Temp File
