@@ -1,0 +1,251 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\AntiVirus.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\AntiVirus.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 235, 122
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About Red Scan - v3.25"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
+    LTEXT           "Made by Vivek Jain - theGhostofC",IDC_STATIC,40,10,132,
+                    8,SS_NOPREFIX
+    LTEXT           "Report Bugs to vivekjain@myrealbox.com",IDC_STATIC,40,
+                    25,132,8
+    DEFPUSHBUTTON   "OK",IDOK,178,20,50,14,WS_GROUP
+    LTEXT           "Copyright (C) 2003",IDC_STATIC,40,40,59,8
+    LTEXT           "This Product will protect You from the Deadly HTML.RedLof.A Virus",
+                    IDC_STATIC,11,55,214,8
+    LTEXT           "Just select the Folder to Scan and Click on the &Scan Button",
+                    IDC_STATIC,11,70,189,8
+    LTEXT           "(For Best Results, First Scan all the Disk Drives of your Computer)",
+                    IDC_STATIC,11,85,206,8
+    LTEXT           "So, Safe Protection and Happy Scanning - bye \t theGhostofC",
+                    IDC_STATIC,11,100,204,8
+END
+
+IDD_ANTIVIRUS_DIALOG DIALOGEX 0, 0, 320, 200
+STYLE DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
+    WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Red Scan - v3.25"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "&Browse...",IDC_BUTTON_BROWSE,239,32,50,14
+    DEFPUSHBUTTON   "&Scan",IDOK,57,179,50,14,WS_DISABLED
+    LTEXT           "Red Scan - v3.25 - by Vivek Jain - TheGhostOfC",
+                    IDC_STATIC_SCANNING_DATA,7,8,305,17
+    LTEXT           "&Folder to Scan",IDC_STATIC_PATH,30,35,47,8
+    EDITTEXT        IDC_EDIT_PATH,84,33,156,12,ES_AUTOHSCROLL | WS_DISABLED
+    GROUPBOX        "Scan Report...",IDC_STATIC_REPORT,93,58,133,102
+    LTEXT           "Scanned",IDC_STATIC_SC,107,84,30,8
+    RTEXT           "0",IDC_STATIC_SCAN_DATA,157,84,41,8
+    LTEXT           "Infected",IDC_STATIC_IN,107,96,27,8
+    RTEXT           "0",IDC_STATIC_INFE_DATA,157,96,41,8
+    LTEXT           "Repaired",IDC_STATIC_RE,107,108,30,8
+    RTEXT           "0",IDC_STATIC_REPA_DATA,157,108,41,8
+    LTEXT           "Not Repaired",IDC_STATIC_NO,107,120,43,8
+    RTEXT           "0",IDC_STATIC_NOT_REPA_DATA,157,120,41,8
+    LTEXT           "Deleted",IDC_STATIC_DELE,107,132,26,8
+    RTEXT           "0",IDC_STATIC_DELE_DATA,157,132,41,8
+    PUSHBUTTON      "&Close",IDCANCEL,135,179,50,14
+    PUSHBUTTON      "&About...",IDC_BUTTON_ABOUT,213,179,50,14
+    LISTBOX         IDC_LIST_REPORT,7,28,306,145,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | NOT WS_VISIBLE | WS_VSCROLL | 
+                    WS_HSCROLL | WS_TABSTOP
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 3,2,2,0
+ PRODUCTVERSION 3,2,2,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "Comments", "This Application will Remove the Deadly HTML.RedLof.A Virus\0"
+            VALUE "Contact", "vivekjain@myrealbox.com\0"
+            VALUE "FileDescription", "AntiVirus Application\0"
+            VALUE "FileVersion", "3.22\0"
+            VALUE "LegalCopyright", "Copyright (C) 2003\0"
+            VALUE "Made By", "Vivek Jain\0"
+            VALUE "OriginalFilename", "RedScan.EXE\0"
+            VALUE "ProductName", "Red Scan - v3.25 - by Vivek Jain - TheGhostOfC\0"
+            VALUE "ProductVersion", "3.22\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 115
+    END
+
+    IDD_ANTIVIRUS_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 313
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 193
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// BINARYDATA
+//
+
+IDR_VIRDATA BINARYDATA DISCARDABLE 
+BEGIN
+    0x483c, 0x4d54, 0x3e4c, 0x0a0d, 0x423c, 0x444f, 0x2059, 0x6e6f, 0x6f6c, 
+    0x6461, 0x223d, 0x6276, 0x6373, 0x6972, 0x7470, 0x4b3a, 0x5f4a, 0x7473, 
+    0x7261, 0x2874, 0x2229, 0x0d3e, 0x3c0a, 0x6373, 0x6972, 0x7470, 0x6c20, 
+    0x6e61, 0x7567, 0x6761, 0x3d65, 0x6276, 0x6373, 0x6972, 0x7470, 0x0d3e, 
+    0x640a, 0x636f, 0x6d75, 0x6e65
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About AntiVirus..."
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\AntiVirus.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
