@@ -31,6 +31,10 @@ struct _global_
 	unsigned int deleted;
 	//Pathname of the Temp File
 	char s_path[_MAX_PATH];
+	//Array to Contain All the Paths to Scan
+	CStringArray sz_pathList;
+	//List of all the Logical Partitions
+	CString localDrives;
 	//Exefile Name
 	CString efname;
 	//Scroll Scan or not

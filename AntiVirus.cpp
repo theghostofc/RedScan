@@ -19,7 +19,6 @@ BEGIN_MESSAGE_MAP(CAntiVirusApp, CWinApp)
 		// NOTE - the ClassWizard will add and remove mapping macros here.
 		//    DO NOT EDIT what you see in these blocks of generated code!
 	//}}AFX_MSG
-	ON_COMMAND(ID_HELP, CWinApp::OnHelp)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -53,7 +52,6 @@ BOOL CAntiVirusApp::InitInstance()
 #else
 	Enable3dControlsStatic();	// Call this when linking to MFC statically
 #endif
-
 	CAntiVirusDlg dlg;
 	CAntiVirusDlg::GetEFName(theApp.m_pszAppName);
 	m_pMainWnd = &dlg;
@@ -68,7 +66,6 @@ BOOL CAntiVirusApp::InitInstance()
 		// TODO: Place code here to handle when the dialog is
 		//  dismissed with Cancel
 	}
-
 	// Since the dialog has been closed, return FALSE so that we exit the
 	//  application, rather than start the application's message pump.
 	return FALSE;

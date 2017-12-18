@@ -73,58 +73,48 @@ IDR_MAINFRAME           ICON    DISCARDABLE     "res\\AntiVirus.ico"
 // Dialog
 //
 
-IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 235, 122
+IDD_ABOUTBOX DIALOGEX 0, 0, 235, 106
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "About Red Scan - v3.25"
-FONT 8, "MS Sans Serif"
+CAPTION "About Red Scan - v3.27"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
-    LTEXT           "Made by Vivek Jain - theGhostofC",IDC_STATIC,40,10,132,
-                    8,SS_NOPREFIX
-    LTEXT           "Report Bugs to vivekjain@myrealbox.com",IDC_STATIC,40,
-                    25,132,8
     DEFPUSHBUTTON   "OK",IDOK,178,20,50,14,WS_GROUP
-    LTEXT           "Copyright (C) 2003",IDC_STATIC,40,40,59,8
-    LTEXT           "This Product will protect You from the Deadly HTML.RedLof.A Virus",
-                    IDC_STATIC,11,55,214,8
-    LTEXT           "Just select the Folder to Scan and Click on the &Scan Button",
-                    IDC_STATIC,11,70,189,8
-    LTEXT           "(For Best Results, First Scan all the Disk Drives of your Computer)",
-                    IDC_STATIC,11,85,206,8
-    LTEXT           "So, Safe Protection and Happy Scanning - bye \t theGhostofC",
-                    IDC_STATIC,11,100,204,8
+    LTEXT           "This Product will protect You from the Deadly HTML.RedLof.A Virus\nJust select the Folder to Scan and Click on the &Scan Button\n\n(For Best Results, First Scan all the Disk Drives of your Computer)\nSo, Safe Protection and Happy Scanning - bye \t theGhostofC",
+                    IDC_STATIC_DESC,11,53,213,42,0,WS_EX_TRANSPARENT
+    LTEXT           "Made by Vivek Jain - theGhostofC\n\nReport Bugs to vivekjain@myrealbox.com\n\nCopyright (C) 2004",
+                    IDC_STATIC_ABOUT,35,7,137,41
 END
 
 IDD_ANTIVIRUS_DIALOG DIALOGEX 0, 0, 320, 200
 STYLE DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
     WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
-CAPTION "Red Scan - v3.25"
-FONT 8, "MS Sans Serif"
+CAPTION "Red Scan - v3.27"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
-    PUSHBUTTON      "&Browse...",IDC_BUTTON_BROWSE,239,32,50,14
-    PUSHBUTTON      "OK",IDOK,7,179,50,14,NOT WS_VISIBLE | WS_DISABLED
-    LTEXT           "Red Scan - v3.25 - by Vivek Jain - TheGhostOfC",
-                    IDC_STATIC_SCANNING_DATA,7,8,305,17
     LTEXT           "&Folder to Scan",IDC_STATIC_PATH,30,35,47,8
-    EDITTEXT        IDC_EDIT_PATH,84,33,156,12,ES_AUTOHSCROLL | WS_DISABLED
-    GROUPBOX        "Scan Report...",IDC_STATIC_REPORT,93,58,133,102
-    LTEXT           "Scanned",IDC_STATIC_SC,107,84,30,8
-    RTEXT           "0",IDC_STATIC_SCAN_DATA,157,84,41,8
-    LTEXT           "Infected",IDC_STATIC_IN,107,96,27,8
-    RTEXT           "0",IDC_STATIC_INFE_DATA,157,96,41,8
-    LTEXT           "Repaired",IDC_STATIC_RE,107,108,30,8
-    RTEXT           "0",IDC_STATIC_REPA_DATA,157,108,41,8
-    LTEXT           "Not Repaired",IDC_STATIC_NO,107,120,43,8
-    RTEXT           "0",IDC_STATIC_NOT_REPA_DATA,157,120,41,8
-    LTEXT           "Deleted",IDC_STATIC_DELE,107,132,26,8
-    RTEXT           "0",IDC_STATIC_DELE_DATA,157,132,41,8
-    DEFPUSHBUTTON   "&Scan",IDC_BUTTON_SCAN,57,179,50,14,WS_DISABLED
+    EDITTEXT        IDC_EDIT_PATH,84,33,156,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "&Browse...",IDC_BUTTON_BROWSE,239,32,50,14
+    DEFPUSHBUTTON   "&Scan",IDOK,57,179,50,14
     PUSHBUTTON      "&Close",IDCANCEL,135,179,50,14
     PUSHBUTTON      "&About...",IDC_BUTTON_ABOUT,213,179,50,14
     LISTBOX         IDC_LIST_REPORT,7,28,306,145,LBS_SORT | 
                     LBS_NOINTEGRALHEIGHT | NOT WS_VISIBLE | WS_VSCROLL | 
                     WS_HSCROLL | WS_TABSTOP
+    LTEXT           "Red Scan - v3.27 - by Vivek Jain - TheGhostOfC",
+                    IDC_STATIC_SCANNING_DATA,7,8,305,17
+    GROUPBOX        "Scan Report...",IDC_STATIC_REPORT,93,58,133,102
+    LTEXT           "Scanned",IDC_STATIC_SC,115,81,30,8
+    RTEXT           "0",IDC_STATIC_SCAN_DATA,165,81,41,8
+    LTEXT           "Infected",IDC_STATIC_IN,115,93,27,8
+    RTEXT           "0",IDC_STATIC_INFE_DATA,165,93,41,8
+    LTEXT           "Repaired",IDC_STATIC_RE,115,105,30,8
+    RTEXT           "0",IDC_STATIC_REPA_DATA,165,105,41,8
+    LTEXT           "Not Repaired",IDC_STATIC_NO,115,117,43,8
+    RTEXT           "0",IDC_STATIC_NREP_DATA,165,117,41,8
+    LTEXT           "Deleted",IDC_STATIC_DELE,115,129,26,8
+    RTEXT           "0",IDC_STATIC_DELE_DATA,165,129,41,8
 END
 
 
@@ -158,7 +148,7 @@ BEGIN
             VALUE "LegalCopyright", "Copyright (C) 2003\0"
             VALUE "Made By", "Vivek Jain\0"
             VALUE "OriginalFilename", "RedScan.EXE\0"
-            VALUE "ProductName", "Red Scan - v3.22 - by Vivek Jain - TheGhostOfC\0"
+            VALUE "ProductName", "Red Scan - v3.25 - by Vivek Jain - TheGhostOfC\0"
             VALUE "ProductVersion", "3.22\0"
         END
     END
@@ -184,7 +174,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 228
         TOPMARGIN, 7
-        BOTTOMMARGIN, 115
+        BOTTOMMARGIN, 99
     END
 
     IDD_ANTIVIRUS_DIALOG, DIALOG

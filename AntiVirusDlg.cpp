@@ -5,7 +5,7 @@
 #include "AntiVirus.h"
 #include "AntiVirusDlg.h"
 #include <direct.h>
-#include <objbase.h>
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -33,6 +33,7 @@ public:
 // Implementation
 protected:
 	//{{AFX_MSG(CAboutDlg)
+	virtual BOOL OnInitDialog();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
@@ -52,7 +53,6 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 	
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
 	//{{AFX_MSG_MAP(CAboutDlg)
-		// No message handlers
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -78,6 +78,9 @@ void CAntiVirusDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CAntiVirusDlg)
+	DDX_Control(pDX, IDC_STATIC_DELE, m_de);
+	DDX_Control(pDX, IDC_STATIC_NREP_DATA, m_notrdata);
+	DDX_Control(pDX, IDOK, m_btnOk);
 	DDX_Control(pDX, IDCANCEL, m_btnCancel);
 	DDX_Control(pDX, IDC_STATIC_DELE_DATA, m_deledata);
 	DDX_Control(pDX, IDC_STATIC_SC, m_sc);
@@ -87,12 +90,10 @@ void CAntiVirusDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_STATIC_REPORT, m_stReport);
 	DDX_Control(pDX, IDC_BUTTON_BROWSE, m_btnBrowse);
 	DDX_Control(pDX, IDC_STATIC_PATH, m_stPath);
-	DDX_Control(pDX, IDC_BUTTON_SCAN, m_btnScan);
 	DDX_Control(pDX, IDC_LIST_REPORT, m_lstScan);
 	DDX_Control(pDX, IDC_STATIC_SCANNING_DATA, m_stScan);
 	DDX_Control(pDX, IDC_STATIC_SCAN_DATA, m_scandata);
 	DDX_Control(pDX, IDC_STATIC_REPA_DATA, m_repadata);
-	DDX_Control(pDX, IDC_STATIC_NOT_REPA_DATA, m_notrdata);
 	DDX_Control(pDX, IDC_STATIC_INFE_DATA, m_infedata);
 	DDX_Control(pDX, IDC_EDIT_PATH, m_path);
 	//}}AFX_DATA_MAP
@@ -104,10 +105,11 @@ BEGIN_MESSAGE_MAP(CAntiVirusDlg, CDialog)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON_BROWSE, OnBrowse)
-	ON_EN_CHANGE(IDC_EDIT_PATH, OnChangeEditPath)
-	ON_BN_CLICKED(IDC_BUTTON_SCAN, OnScan)
 	ON_BN_CLICKED(IDC_BUTTON_ABOUT, OnAbout)
 	ON_LBN_DBLCLK(IDC_LIST_REPORT, OnDblclkListReport)
+	ON_EN_CHANGE(IDC_EDIT_PATH, OnChangeEditPath)
+	ON_WM_DESTROY()
+	ON_WM_SIZE()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -138,11 +140,29 @@ BOOL CAntiVirusDlg::Init(UINT uIDRMap)
 	FreeResource(hGlob);
 	return TRUE;
 }
-
+void GetFixedDrives()
+{
+	char drives[_MAX_PATH]={0};
+	char temp[]="A:\\";
+	GetLogicalDriveStrings(_MAX_PATH,drives);
+	int i=0,j=0;
+	while(!j)
+	{
+		temp[0]=drives[i];
+		if(GetDriveType(temp)==DRIVE_FIXED)
+		{
+			glo.localDrives+=temp;
+			glo.localDrives+=";";
+			i+=3;
+		}
+		if(drives[i]==NULL && drives[i+1]==NULL)
+			j=1;
+		i++;
+	}
+}
 BOOL CAntiVirusDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-
 	// Add "About..." menu item to system menu.
 
 	// IDM_ABOUTBOX must be in the system command range.
@@ -166,13 +186,28 @@ BOOL CAntiVirusDlg::OnInitDialog()
 	//  when the application's main window is not a dialog
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
+
+	GetFixedDrives();
 	InitDialog();
+	SetWindowText("Red Scan - v3.27");
+	SetDlgItemText(IDC_STATIC_SC,"Scanned");
+	SetDlgItemText(IDC_STATIC_IN,"Infected");
+	SetDlgItemText(IDC_STATIC_RE,"Repaired");
+	SetDlgItemText(IDC_STATIC_NO,"Not Repaired");
+	SetDlgItemText(IDC_STATIC_DELE,"Deleted");
+	SetDlgItemText(IDC_STATIC_PATH,"Folder to Scan");
+	if (AfxGetApp()->m_lpCmdLine[0] != _T('\0'))
+	{
+		m_path.SetWindowText(AfxGetApp()->m_lpCmdLine);
+		MessageBox(AfxGetApp()->m_lpCmdLine);
+		OnOK();
+	}
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 void CAntiVirusDlg::InitDialog()
 {
 	m_btnBrowse.EnableWindow();
-	m_btnScan.EnableWindow(FALSE);
+	m_btnOk.EnableWindow(FALSE);
 	m_scandata.SetWindowText("0");
 	m_infedata.SetWindowText("0");
 	m_repadata.SetWindowText("0");
@@ -186,24 +221,30 @@ void CAntiVirusDlg::InitDialog()
 	glo.bScan=true;
 	glo.bClose=true;
 	strcpy(glo.buffer, "C:\\");
-	m_btnScan.SetWindowText("&Scan");
+	m_btnOk.SetWindowText("&Scan");
 	m_btnCancel.SetWindowText("&Close");
+	m_path.EnableWindow();
 	m_stPath.ShowWindow(SW_SHOW);
 	m_path.ShowWindow(SW_SHOW);
 	m_btnBrowse.ShowWindow(SW_SHOW);
 	m_stReport.ShowWindow(SW_SHOW);
-	m_stScan.SetWindowText("Red Scan - v3.25 - by Vivek Jain - TheGhostOfC");
+	m_stScan.SetWindowText("Red Scan - v3.27 - by Vivek Jain, Rohit Pathak && Himanshu Jha");//by Vivek Jain - TheGhostOfC");
 	m_lstScan.ResetContent();
 	m_lstScan.ShowWindow(SW_HIDE);
+
 	m_scandata.ShowWindow(SW_SHOW);
 	m_infedata.ShowWindow(SW_SHOW);
 	m_repadata.ShowWindow(SW_SHOW);
 	m_notrdata.ShowWindow(SW_SHOW);
+	m_deledata.ShowWindow(SW_SHOW);
+
 	m_sc.ShowWindow(SW_SHOW);
 	m_in.ShowWindow(SW_SHOW);
 	m_re.ShowWindow(SW_SHOW);
 	m_no.ShowWindow(SW_SHOW);
-	m_btnBrowse.SetFocus();
+	m_de.ShowWindow(SW_SHOW);
+	m_path.SetFocus();
+	//m_btnBrowse.SetFocus();
 }
 
 void CAntiVirusDlg::OnSysCommand(UINT nID, LPARAM lParam)
@@ -265,7 +306,7 @@ LPITEMIDLIST PidlBrowse(HWND hwnd, LPSTR pszDisplayName)
     bi.pidlRoot = pidlRoot;
     bi.pszDisplayName = pszDisplayName;
     bi.lpszTitle = "Choose a folder to Scan";
-    bi.ulFlags = BIF_RETURNFSANCESTORS|BIF_RETURNONLYFSDIRS;
+    bi.ulFlags = BIF_RETURNONLYFSDIRS;
     bi.lpfn = NULL;
     bi.lParam = 0;
 	pidlSelected = SHBrowseForFolder(&bi);
@@ -286,19 +327,40 @@ void CAntiVirusDlg::OnBrowse()
 	hResult = CoInitialize( pvReserved );
 	pidlRoot = PidlBrowse( hwnd, pszDisplayName);
 	bPath = SHGetPathFromIDList(pidlRoot, pszDisplayName);
+	CString temp;
+	m_path.GetWindowText(temp);
+	if(bPath==TRUE)
+	{
+		if(temp.GetLength()>0)
+			temp.Insert(0,";");
+		m_path.SetWindowText(pszDisplayName+temp);
+	}
+	else
+	{
+		if(temp.GetLength()==0)
+			m_path.SetWindowText(glo.localDrives+temp);
+	}
 	CoUninitialize();
-	m_path.SetWindowText(pszDisplayName);
-	if (strlen(pszDisplayName)>0)
-		m_btnScan.SetFocus();
+	m_btnOk.EnableWindow();
+	m_btnOk.SetFocus();
 }
 
 void CAntiVirusDlg::OnChangeEditPath() 
 {
+	CString s;
 	int Len = m_path.GetWindowTextLength();
 	if(Len > 0)
-		m_btnScan.EnableWindow();
+	{
+		m_path.GetWindowText(s);
+		s.TrimLeft();
+		s.TrimRight();
+		if(s.GetLength()>0)
+			m_btnOk.EnableWindow();
+		else
+			m_path.SetWindowText(s);
+	}
 	else
-		m_btnScan.EnableWindow(FALSE);
+		m_btnOk.EnableWindow(FALSE);
 }
 
 void DeleteKey(const HKEY hKey, char *cKey, char *cSubKey=NULL)
@@ -455,17 +517,18 @@ void CAntiVirusDlg::ScanDll()
 	DWORD lAttrib;
 	if(!strncmp(infdata,"ExeString = ",10))
 	{
-		lAttrib = ::GetFileAttributes(s_path);
-		::SetFileAttributes(s_path, lAttrib & (~FILE_ATTRIBUTE_READONLY));
+		lAttrib = GetFileAttributes(s_path);
+		SetFileAttributes(s_path, lAttrib & (~FILE_ATTRIBUTE_READONLY));
 		remove(s_path);
 		Update(dleted);
 	}
 	else
 		Update(0);
 	delete [] infdata;
-	struct _finddata_t filestruct;
-	long hnd;
-	hnd = _findfirst("C:\\Program Files\\Common Files\\Microsoft Shared\\Stationery\\Blank.htm",&filestruct);
+	_finddata_t filestruct;
+	long hnd=_findfirst(
+		"C:\\Program Files\\Common Files\\Microsoft Shared\\Stationery\\Blank.htm",
+		&filestruct);
 	if(hnd != -1)
 		Update(Repair(filestruct));
 	strcpy(s_path,getenv("WINDIR"));
@@ -474,17 +537,18 @@ void CAntiVirusDlg::ScanDll()
 	if(hnd != -1)
 		Update(Repair(filestruct));
 }
+
 void CAntiVirusDlg::ScanReport()
 {
 	CString szReport;
 	CString szTemp;
 	m_path.SetWindowText(NULL);
+	m_path.EnableWindow();
 	m_stScan.SetWindowText("Done");
 	m_scandata.GetWindowText(szReport);
 	glo.bClose=true;
 	m_btnCancel.SetWindowText("&Close");
 	m_btnBrowse.EnableWindow();
-	m_btnBrowse.SetFocus();
 	if(glo.scanned == 0)
 	{
 			MessageBox("No File to Scan", "Sorry", MB_OK|MB_ICONEXCLAMATION);
@@ -493,7 +557,7 @@ void CAntiVirusDlg::ScanReport()
 	m_infedata.GetWindowText(szReport);
 	if(glo.infected == 0)
 	{
-		MessageBox("No Virus Found in the Scan", "!! Congrats !!", MB_OK|MB_ICONEXCLAMATION);
+		MessageBox("No Virus Found in the Scan", "!! Congrats !!", MB_OK|MB_ICONINFORMATION);
 		return;
 	}
 	szReport = "Repaired ";
@@ -509,7 +573,7 @@ void CAntiVirusDlg::ScanReport()
 	MessageBox(szReport, "Result", MB_OK|MB_ICONINFORMATION);
 	if(glo.not_repaired > 0)
 	{
-		m_btnScan.SetWindowText("&Back");
+		m_btnOk.SetWindowText("&Back");
 		m_stPath.ShowWindow(SW_HIDE);
 		m_path.ShowWindow(SW_HIDE);
 		m_btnBrowse.ShowWindow(SW_HIDE);
@@ -518,52 +582,44 @@ void CAntiVirusDlg::ScanReport()
 		m_infedata.ShowWindow(SW_HIDE);
 		m_repadata.ShowWindow(SW_HIDE);
 		m_notrdata.ShowWindow(SW_HIDE);
+		m_deledata.ShowWindow(SW_HIDE);
 		m_sc.ShowWindow(SW_HIDE);
 		m_in.ShowWindow(SW_HIDE);
 		m_re.ShowWindow(SW_HIDE);
 		m_no.ShowWindow(SW_HIDE);
-		m_btnScan.EnableWindow();
+		m_de.ShowWindow(SW_HIDE);
+
+		m_btnOk.EnableWindow();
 		m_stScan.SetWindowText("One or More of these Files are still infected...");
 		m_lstScan.ShowWindow(SW_SHOW);
-		m_btnScan.SetFocus();
+		m_btnOk.SetFocus();
 		glo.bScan = false;
 	}
+	m_path.SetFocus();
 }
 //The Main Thread Function
 UINT MainScan(LPVOID pParam)
 {
+	_finddata_t fb={0};
 	CAntiVirusDlg *cavd=(CAntiVirusDlg*)pParam;
-	cavd->SearchDirectory();
+	for(int i=0;i<glo.sz_pathList.GetSize();i++)
+	{
+		if(GetFileAttributes(glo.sz_pathList.GetAt(i)) & 
+			FILE_ATTRIBUTE_DIRECTORY)
+		{
+			if(!_chdir(glo.sz_pathList.GetAt(i)))
+				cavd->SearchDirectory();
+		}
+		else
+		{
+			long hnd=_findfirst(glo.sz_pathList.GetAt(i),&fb);
+			if(hnd != -1)
+				cavd->Update(cavd->Repair(fb));
+		}
+	}
 	cavd->ScanReport();
 	AfxEndThread(0);
 	return 0;
-}
-//Scan the Destn folder
-void CAntiVirusDlg::OnScan()
-{
-	if(glo.bScan)
-	{
-		CString szReport;
-		m_path.GetWindowText(glo.buffer, _MAX_PATH);
-		if(_chdir(glo.buffer))
-		{
-			MessageBox("Invalid Path", "Error", MB_OK|MB_ICONSTOP);
-			InitDialog();
-			return;
-		}
-		InitDialog();
-		m_btnCancel.SetWindowText("S&top");
-		m_btnBrowse.EnableWindow(FALSE);
-		m_btnCancel.SetFocus();
-		glo.bClose=false;
-		//Three Main Fn()s to Scan for the Virus
-		ScanReg();//1 - Registry
-		ScanDll();//2 - Kernel.Dll
-		//SearchDirectory();//3 - Scan the Destn Folder
-		m_pthread=AfxBeginThread(MainScan,(LPVOID)this);
-	}
-	else
-		InitDialog();
 }
 
 void CAntiVirusDlg::OnAbout() 
@@ -622,13 +678,13 @@ void CAntiVirusDlg::Update(int retval)
 //Scan the Directory Tree 2 get files
 void CAntiVirusDlg::SearchDirectory()
 {
-	struct _finddata_t filestruct;
+	_finddata_t filestruct;
 	long hnd;
 	CString szMess;
 	hnd = _findfirst("*",&filestruct);
 	if(hnd == -1)
 		return;
-	if(::GetFileAttributes(filestruct.name) & 
+	if(GetFileAttributes(filestruct.name) & 
         FILE_ATTRIBUTE_DIRECTORY )
 	{
 		if(*filestruct.name != '.')
@@ -655,7 +711,7 @@ void CAntiVirusDlg::SearchDirectory()
 	}
 	while(!(_findnext(hnd,&filestruct)))
 	{
-		if(::GetFileAttributes(filestruct.name) & 
+		if(GetFileAttributes(filestruct.name) & 
                FILE_ATTRIBUTE_DIRECTORY )
 		{
 			if(*filestruct.name != '.')
@@ -686,9 +742,8 @@ void CAntiVirusDlg::SearchDirectory()
 }
 
 //Repair the Infected File by Copying it to a New Temp File
-int CAntiVirusDlg::Repair(_finddata_t f)
+int CAntiVirusDlg::Repair(_finddata_t fb)
 {
-	fb = f;
 	const unsigned long datsize = 11516;//The size of the Virus Code
 	fstream ifile, rfile;
 	//char ch;
@@ -738,7 +793,7 @@ int CAntiVirusDlg::Repair(_finddata_t f)
 		rfile.write(infdata, fb.size - 11160);
 		rfile.close();
 		ifile.close();
-		retval=Del();
+		retval=Del(fb);
 	}
 	else
 	{
@@ -768,7 +823,7 @@ int CAntiVirusDlg::Repair(_finddata_t f)
 			rfile.write(infdata, fb.size - datsize);
 			rfile.close();
 			ifile.close();
-			retval=Del();
+			retval=Del(fb);
 		}
 		//3. Search for HTT type
 		else
@@ -799,7 +854,7 @@ int CAntiVirusDlg::Repair(_finddata_t f)
 				rfile.write(infdata, (fb.size - datsize) + 8);
 				ifile.close();
 				rfile.close();
-				retval=Del();
+				retval=Del(fb);
 			}
 			//4. Search for DLL type
 			else
@@ -832,16 +887,16 @@ int CAntiVirusDlg::Repair(_finddata_t f)
 }
 
 //Delete the Infected File and Restore the Temp File with its Name
-int CAntiVirusDlg::Del()
+int CAntiVirusDlg::Del(_finddata_t fb)
 {
 	DWORD lAttrib;
 	int retval=ok;
-	lAttrib = ::GetFileAttributes(fb.name);
-	::SetFileAttributes(fb.name, lAttrib & (~FILE_ATTRIBUTE_READONLY));
+	lAttrib = GetFileAttributes(fb.name);
+	SetFileAttributes(fb.name, lAttrib & (~FILE_ATTRIBUTE_READONLY));
 	if( ! remove(fb.name))
 	{
 		rename(glo.s_path,fb.name);
-		::SetFileAttributes(fb.name, lAttrib);
+		SetFileAttributes(fb.name, lAttrib);
 	}
 	else
 	{
@@ -866,7 +921,7 @@ void CAntiVirusDlg::OnDblclkListReport()
 	{
 		CString szSelection;
 		m_lstScan.GetText( nSelection, szSelection );
-		MessageBox( szSelection, "Red Scan - v3.25 - by Vivek Jain - TheGhostOfC", MB_OK|MB_ICONINFORMATION);
+		MessageBox( szSelection, "Red Scan - v3.27"/* - by Vivek Jain - TheGhostOfC"*/, MB_OK|MB_ICONINFORMATION);
 	}
 }
 //SetCursor (LoadCursor (NULL, IDC_WAIT));
@@ -876,15 +931,111 @@ void CAntiVirusDlg::OnCancel()
 {
 	if(!glo.bClose)
 	{
-		::SuspendThread(m_pthread->m_hThread);
-		if(MessageBox("This will Stop the Current Scanning, some or all of your files may still be infected by the Deadly HTML.RedLof.A Virus. Are you sure ?", "Are you sure ?", MB_YESNO|MB_ICONQUESTION)==IDYES)
+		SuspendThread(m_pthread->m_hThread);
+		if(MessageBox("This will Stop the Current Scanning, some or all of your files may still be infected by the Deadly HTML.RedLof.A Virus. Are you sure ?", "Are you sure ?", MB_YESNO|MB_ICONQUESTION|MB_DEFBUTTON2)==IDYES)
 		{
-			::TerminateThread(m_pthread->m_hThread, 0);
+			TerminateThread(m_pthread->m_hThread, 0);
 			InitDialog();
+			m_path.SetWindowText("");
 		}
 		else
-			::ResumeThread(m_pthread->m_hThread);
+			ResumeThread(m_pthread->m_hThread);
 		return;
 	}
 	CDialog::OnCancel();
+}
+
+//Scan the Destn folder
+void CAntiVirusDlg::OnOK() 
+{
+	if(glo.bScan)
+	{
+		CString s, t;
+		m_path.GetWindowText(s);
+		glo.sz_pathList.RemoveAll();
+		while(s.Find(";",0)!=-1)
+		{
+			t=s.SpanExcluding(";");
+			t.TrimRight();
+			t.TrimLeft();
+			glo.sz_pathList.Add(t);
+			s.Delete(0,s.Find(";",0)+1);
+		}
+		if(s.GetLength()>0)
+			glo.sz_pathList.Add(s);
+		InitDialog();
+		m_path.EnableWindow(FALSE);
+		m_btnCancel.SetWindowText("S&top");
+		m_btnBrowse.EnableWindow(FALSE);
+		m_btnCancel.SetFocus();
+		glo.bClose=false;
+		//Three Main Fn()s to Scan for the Virus
+		ScanReg();//1 - Registry
+		ScanDll();//2 - Kernel.Dll
+		//SearchDirectory();//3 - Scan the Destn Folder
+		m_pthread=AfxBeginThread(MainScan,(LPVOID)this,THREAD_PRIORITY_HIGHEST);
+	}
+	else
+		InitDialog();
+}
+
+BOOL CAboutDlg::OnInitDialog() 
+{
+	CDialog::OnInitDialog();
+	SetWindowText("About Red Scan - v3.27");
+	SetDlgItemText(IDC_STATIC_ABOUT,
+		"Made by Vivek Jain, Rohit Pathak && Himanshu Jha\n\nReport Bugs to vivekjain@myrealbox.com\nCopyright (C) 2004");
+	//SetDlgItemText(IDC_STATIC_ABOUT,
+	//	"Made by Vivek Jain - theGhostofC\n\nReport Bugs to vivekjain@myrealbox.com\n\nCopyright (C) 2004");
+	SetDlgItemText(IDC_STATIC_DESC,
+		"This Product will protect You from the Deadly HTML.RedLof.A Virus\nJust select the Folder to Scan and Click on the &Scan Button\n\n(For Best Results, First Scan all the Disk Drives of your Computer)\nSo, Safe Protection and Happy Scanning - bye \t theGhostofC");
+	return TRUE;  // return TRUE unless you set the focus to a control
+	              // EXCEPTION: OCX Property Pages should return FALSE
+}
+
+LRESULT CAntiVirusDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam) 
+{
+	NOTIFYICONDATA nid;
+	if(message==WM_USER && (UINT)lParam==WM_LBUTTONDOWN)
+	{
+		nid.cbSize=sizeof(nid);
+		nid.hWnd=GetSafeHwnd();
+		nid.uID=1;
+		nid.uFlags=0;
+		Shell_NotifyIcon(NIM_DELETE,&nid);
+		ShowWindow(SW_RESTORE);
+	}
+	return CDialog::WindowProc(message, wParam, lParam);
+}
+
+void CAntiVirusDlg::OnDestroy() 
+{
+	CDialog::OnDestroy();
+	NOTIFYICONDATA nid;
+	nid.cbSize=sizeof(nid);
+	nid.hWnd=GetSafeHwnd();
+	nid.uID=1;
+	nid.uFlags=0;
+	Shell_NotifyIcon(NIM_DELETE,&nid);
+	delete [] virdata;
+	PostQuitMessage(0);	
+}
+
+void CAntiVirusDlg::OnSize(UINT nType, int cx, int cy) 
+{
+	NOTIFYICONDATA nid;
+	if(nType==SIZE_MINIMIZED)
+	{		
+		nid.cbSize=sizeof(nid);
+		nid.hWnd=GetSafeHwnd();
+		nid.uID=1;
+		nid.uFlags=NIF_ICON|NIF_MESSAGE|NIF_TIP;
+		nid.uCallbackMessage=WM_USER;
+		nid.hIcon=AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+		strcpy(nid.szTip,"RedScan v3.27");
+		ShowWindow(SW_HIDE);
+		Shell_NotifyIcon(NIM_ADD,&nid);
+	}
+	else	
+		CDialog::OnSize(nType, cx, cy);
 }

@@ -33,6 +33,9 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CAntiVirusDlg)
 	enum { IDD = IDD_ANTIVIRUS_DIALOG };
+	CStatic	m_de;
+	CStatic	m_notrdata;
+	CButton	m_btnOk;
 	CButton	m_btnCancel;
 	CStatic	m_deledata;
 	CStatic	m_sc;
@@ -42,12 +45,10 @@ public:
 	CButton	m_stReport;
 	CButton	m_btnBrowse;
 	CStatic	m_stPath;
-	CButton	m_btnScan;
 	CListBox	m_lstScan;
 	CStatic	m_stScan;
 	CStatic	m_scandata;
 	CStatic	m_repadata;
-	CStatic	m_notrdata;
 	CStatic	m_infedata;
 	CEdit	m_path;
 	//}}AFX_DATA
@@ -56,17 +57,17 @@ public:
 	//{{AFX_VIRTUAL(CAntiVirusDlg)
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
+	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
 	//}}AFX_VIRTUAL
 
 // Implementation
 protected:
 	HICON m_hIcon;
-	_finddata_t fb;
 	char *virdata;
 	CWinThread* m_pthread;
 	void InitDialog();
 	void ScanDll();
-	int Del();
+	int Del(_finddata_t fb);
 	BOOL Init(UINT uIDRMap);
 	// Generated message map functions
 	//{{AFX_MSG(CAntiVirusDlg)
@@ -75,11 +76,13 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	afx_msg void OnBrowse();
-	afx_msg void OnChangeEditPath();
-	afx_msg void OnScan();
 	afx_msg void OnAbout();
 	afx_msg void OnDblclkListReport();
 	virtual void OnCancel();
+	virtual void OnOK();
+	afx_msg void OnChangeEditPath();
+	afx_msg void OnDestroy();
+	afx_msg void OnSize(UINT nType, int cx, int cy);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
